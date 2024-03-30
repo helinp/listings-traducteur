@@ -1,0 +1,23 @@
+body {
+    background-color: #eaedf9;
+}
+.tooltip-text {
+    bottom: -10%;
+    left: 50%;
+    margin-left: -50px; /* Ajustez selon la taille de votre tooltip */
+    visibility: hidden; /* Cache le tooltip par défaut */
+    opacity: 0;
+    transition: opacity 0.3s;
+    width: 20rem;
+    font-size: smaller;
+    white-space: preserve !important;
+}
+
+td:hover .tooltip-text {
+    visibility: visible; /* Affiche le tooltip au survol */
+    opacity: 1;
+}
+
+table tbody {
+    min-height: 100vh;
+}

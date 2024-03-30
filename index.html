@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <title>Humanisation Listing</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="//mozilla.github.io/pdf.js/build/pdf.js"></script>
+  <script src="js/MainController.js" type="module"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.worker.min.js';
+  </script>
+
+  <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+  <div class="container mx-auto bg-white p-8 rounded-lg shadow-md w-96 mt-4" id="form">
+    <div class="columns-1">
+      <h1 class="text-xl font-bold mb-4">Importer un listing PDF CF</h1>
+      <form id="import-form" class="space-y-4">
+        <div>
+          <input type="file" name="fileToUpload" id="pdf-file"
+            class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+        </div>
+        <div>
+          <button type="button" id="import-btn"
+            class="py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 w-full">
+            Traduire!
+          </button>
+        </div>
+        <p class="text-sm text-gray-600">Aucune donnée n'est envoyée sur un serveur distant. La conversion s'essectue uniquement sur votre ordinateur.</p>
+      </form>
+      <div id="resultats" class="mt-4 text-sm text-gray-600"></div>
+    </div>
+  </div>
+
+  <div class="container mx-auto bg-white p-8 rounded-lg shadow-md mt-4 hidden" id="div-select-mdp">
+    <div class="w-full max-w-xs mx-auto">
+      <select id="select-mdp" name="simple-select"
+        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"></select>
+    </div>
+  </div>
+
+  <div class="container mx-auto bg-white p-8 rounded-lg shadow-md mt-4 hidden" id="div-data-mdp">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="personalInfos">
+      <!-- Matricule -->
+      <div>
+        <h3 class="text-lg font-semibold">Matricule</h3>
+        <p id="matricule" class="text-sm">123456</p>
+      </div>
+
+      <!-- Nom et Prénom -->
+      <div>
+        <h3 class="text-lg font-semibold">Nom et Prénom</h3>
+        <p id="nomPrenom" class="text-sm">John Doe</p>
+      </div>
+
+      <!-- Numéro de Compte -->
+      <div>
+        <h3 class="text-lg font-semibold">Numéro de Compte</h3>
+        <p id="numeroCompte" class="text-sm">000123456789</p>
+      </div>
+
+      <!-- Adresse -->
+      <div>
+        <h3 class="text-lg font-semibold">Adresse</h3>
+        <p id="adresseRue" class="text-sm">123 Rue Exemple</p>
+        <p id="adresseVille" class="text-sm">75000, Paris</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mx-auto my-8">
+    <div class="overflow-x-auto shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50" id="table-header">
+        </thead>
+        <tbody id="table-data">
+        </tbody>
+        <tfoot id="table-footer">
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+</body>
+
+</html>
