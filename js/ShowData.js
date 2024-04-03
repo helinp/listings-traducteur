@@ -182,11 +182,11 @@ function showCalculDimonaTable(calculDimonas, indexTables, data) {
             },
             calculDimona: {
                 valeur: mensuelBrut,
-                string: mensuelBrut.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' })
+                string: mensuelBrut.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 3  })
             },
             calculDimonaIndexe: {
                 valeur: mensuelBrutIndexe,
-                string: mensuelBrutIndexe.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' })
+                string: mensuelBrutIndexe.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 3  })
             }
         };
         

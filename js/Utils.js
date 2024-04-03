@@ -148,7 +148,7 @@ export function constructTableFooter(footer, tableData, order) {
         });
         // Formatte le total en tant que monnaie si nécessaire
         if (!isNaN(total) && contientNumber) {
-            td.textContent = total.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' });
+            td.textContent = total.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR', minimumFractionDigits: 3});
         }
         tr.appendChild(td);
     }
