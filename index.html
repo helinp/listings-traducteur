@@ -35,7 +35,8 @@
             Traduire!
           </button>
         </div>
-        <p class="text-sm text-gray-600">Aucune donnée n'est envoyée sur un serveur distant. La conversion s'essectue uniquement sur votre ordinateur.</p>
+        <p class="text-sm text-gray-600">Aucune donnée n'est envoyée sur un serveur distant. La conversion s'effectue
+          uniquement sur votre ordinateur.</p>
       </form>
       <div id="resultats" class="mt-4 text-sm text-gray-600"></div>
     </div>
@@ -75,20 +76,39 @@
         <p id="adresseVille" class="text-sm">75000, Paris</p>
       </div>
     </div>
-  </div>
 
-  <div class="container mx-auto my-8">
-    <div class="overflow-x-auto shadow-md sm:rounded-lg">
-      <table class="w-full text-sm text-left text-gray-500">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50" id="table-header">
-        </thead>
-        <tbody id="table-data">
-        </tbody>
-        <tfoot id="table-footer">
-        </tfoot>
-      </table>
+    <div class="container mx-auto my-8">
+      <div class="overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50" id="table-header">
+          </thead>
+          <tbody id="table-data">
+          </tbody>
+          <tfoot id="table-footer">
+          </tfoot>
+        </table>
+      </div>
     </div>
-  </div>
+    <div class="container mx-auto my-8">
+      <div class="overflow-x-auto shadow-md sm:rounded-lg">
+        <h2 class="text-lg font-semibold m-2">Dimona</h2>
+        <div class="mx-2">
+          <!-- input float avec Tailwind CSS -->
+          <label for="input-float-index" class="font-semibold">Index</label>
+          <input type="text" id="input-float-index"
+            class="p-1 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="2,0399" value="2,0399" disabled>
+        </div>
+        <table class="w-full text-sm text-left text-gray-500 my-4">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50" id="table-dimona-header">
+          </thead>
+          <tbody id="table-dimona-data">
+          </tbody>
+          <tfoot id="table-dimona-footer">
+          </tfoot>
+        </table>
+      </div>
+    </div>
 
 </body>
 

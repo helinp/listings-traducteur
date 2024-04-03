@@ -1,4 +1,5 @@
-import { camelCaseToSpaced } from './utils.js';
+import {constructTableCustomData, constructTableData, constructTableFooter, constructTableHeader } from './Utils.js';
+import { CalculDimona } from './CalculDimona.js';
 
 // Fonction pour gérer les données PDF
 export function injectSelectMdp(data) {
@@ -86,76 +87,9 @@ export function showTable(data, index) {
         'remunerationNette'
     ];
 
-    // ajoute les th au header #table-header
-    for (const prop of order) {
-        const th = document.createElement('th');
-        th.className = "px-6 py-3";
-        th.textContent = camelCaseToSpaced(prop.charAt(0).toUpperCase() + prop.slice(1));
-        document.querySelector('#table-header').appendChild(th);
-    }
-
-    for (const key of data) {
-        const tr = document.createElement('tr');
-        tr.className = "even:bg-gray-50 odd:bg-white border-b";
-
-        // Données
-        let transactions = key.transaction;
-        let remunerations = key.remuneration;
-
-        let line = { ...transactions, ...remunerations };
-
-        for (const prop of order) {
-            const td = document.createElement('td');
-            td.className = "px-3 py-2 relative group";
-            td.setAttribute('data-prop', prop);
-
-            // Créez d'abord le contenu principal de la cellule.
-            if (typeof line[prop].string === 'string') {
-                td.innerHTML = line[prop].string;
-            } else {
-                td.innerHTML = formatTooltipContent(line[prop].valeur);
-            }
-
-            tr.appendChild(td);
-        }
-
-        tableData.appendChild(tr);
-    }
-
-    const footer = document.querySelector('#table-footer');
-    footer.innerHTML = '';
-    const tr = document.createElement('tr');
-    tr.className = "even:bg-gray-50 odd:bg-white border-b";
-    tr.innerHTML = '<td class="px-3 py-2 font-bold">Total</td>';
-
-    for (const prop of order) {
-        // saute le premier élément
-        if (prop === 'statut') {
-            continue;
-        }
-
-        const td = document.createElement('td');
-        td.className = "px-3 py-2 font-bold";
-        // Cette fois, la sélection est basée sur les 'td' ayant un attribut 'data-prop' correspondant à 'prop'
-        const dataValues = tableData.querySelectorAll(`td[data-prop="${prop}"] span[data-value]`);
-        let total = 0;
-        let contientNumber = false;
-        dataValues.forEach((element) => {
-            // Utilise l'attribut data-value pour le calcul
-            const value = parseFloat(element.getAttribute('data-value'));
-            if (!isNaN(value)) {
-                total += value;
-                contientNumber = true;
-            }
-        });
-        // Formatte le total en tant que monnaie
-        if (!isNaN(total) && contientNumber) {
-            td.textContent = total.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' });
-        }
-        tr.appendChild(td);
-    }
-
-    footer.appendChild(tr);
+    constructTableHeader(tableHeader, order);
+    constructTableData(tableData, data, order);
+    constructTableFooter(tableFooter, tableData, order);
 }
 
 function getAllMdp(data) {
@@ -176,44 +110,125 @@ function getAllMdp(data) {
     });
 }
 
-function formatTooltipContent(data) {
+export function showCalculDimona(data, index) {
 
-    if (typeof data === 'string') {
-        // Si la valeur est une chaîne simple, retournez-la telle quelle
-        return data;
-    }
+    // pour chaque ligne 
+    data = data[index].table;
 
-    // si undefined
-    if (data === undefined) {
-        return '';
-    }
+    // récupère l'index de l'input input-float-index
+    const indexation = parseFloat(document.querySelector('#input-float-index').value);
+    const [calculDimonas, indexTables] = getCalculDimona(data, indexation);
 
-    // si NaN
-    if (isNaN(data)) {
-        return '';
-    }
+    // affiche les resultats 
+    showCalculDimonaTable(calculDimonas, indexTables, data);
 
-    // si float
-    if (typeof data === 'number') {
-        return '<span data-value="' + data.toString() + '">' + data.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' }) + '</span>';
-    }
-
-    let content = '';
-
-    for (const [key, value] of Object.entries(data)) {
-        // Ajoute un titre pour chaque clé principale
-        content += `<div class='font-bold mt-2'>${key.charAt(0).toUpperCase() + key.slice(1)}:</div>`;
-
-        if (typeof value === 'object' && !Array.isArray(value) && value !== null) {
-            // Si la valeur est un objet, itérez sur ses propriétés
-            for (const [subKey, subValue] of Object.entries(value)) {
-                content += `<div class='ml-2'>- ${subKey.charAt(0).toUpperCase() + subKey.slice(1)}: ${subValue}</div>`;
-            }
-        } else {
-            // Pour les valeurs non-objet, les afficher directement sous le titre
-            content += `<div class='ml-2'>- ${value}</div>`;
-        }
-    }
-
-    return content;
 }
+
+function showCalculDimonaTable(calculDimonas, indexTables, data) {
+
+    // table-dimona-data
+    const tableDimonaData = document.querySelector('#table-dimona-data');
+    const tableDimonaFooter = document.querySelector('#table-dimona-footer');
+    const tableDimonaHeader = document.querySelector('#table-dimona-header');
+
+    if (!tableDimonaData) return;
+
+    tableDimonaData.innerHTML = '';
+    tableDimonaHeader.innerHTML = '';
+    tableDimonaFooter.innerHTML = '';
+
+    const order = [
+        'codeFonction',
+        'periodeConcernee',
+        'remunerationBrute',
+        'allocationFoyerResidence',
+        'traitementCentPourCent',
+        'fraction',
+        'calculDimona',
+        'calculDimonaIndexe'
+    ];
+
+    constructTableHeader(tableDimonaHeader, order);
+
+    for(const key of indexTables) {
+        // calculDimonas en cours
+        const calculDimona = calculDimonas[indexTables.indexOf(key)];
+
+        const tr = document.createElement('tr');
+        tr.className = "even:bg-gray-50 odd:bg-white border-b";
+
+        // Données
+        let mensuelBrut = calculDimona.getMensuelBrut();
+        let mensuelBrutIndexe = calculDimona.getMensuelBrutIndexe();
+
+        const customData = {
+            codeFonction: data[indexTables.indexOf(key)].transaction.codeFonction,
+            periodeConcernee: data[indexTables.indexOf(key)].transaction.periodeConcernee,
+            remunerationBrute: {
+                valeur: mensuelBrut,
+                string: mensuelBrut.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' })
+            },
+            allocationFoyerResidence: {
+                valeur: calculDimona.montantFr,
+                string: calculDimona.montantFr.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' })
+            },
+            traitementCentPourCent: {
+                valeur: calculDimona.montantAnnuel100,
+                string: calculDimona.montantAnnuel100.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' })
+            },
+            fraction: {
+                valeur: calculDimona.numerateurCharge + '/' + calculDimona.denominateurCharge,
+                string: calculDimona.numerateurCharge + '/' + calculDimona.denominateurCharge
+            },
+            calculDimona: {
+                valeur: mensuelBrut,
+                string: mensuelBrut.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' })
+            },
+            calculDimonaIndexe: {
+                valeur: mensuelBrutIndexe,
+                string: mensuelBrutIndexe.toLocaleString('fr-BE', { style: 'currency', currency: 'EUR' })
+            }
+        };
+        
+        constructTableCustomData(tableDimonaData, customData, order);
+    }
+
+    // calcul du total
+    constructTableFooter(tableDimonaFooter, tableDimonaData, order);
+}
+
+function getCalculDimona(data, indexation) {
+
+    var calculsDimona = [];
+    var indexTables = [];
+
+    for (const key of data) {
+
+        if (!key.transaction.fraction.valeur) {
+            continue;
+        }
+
+        indexTables.push(key);
+
+        // récupère remunerationBrute, allocationFoyerResidence, traitementCentPourCent, fraction, 
+        const remunerationBrute = key.remuneration.remunerationBrute.valeur;
+        const allocationFoyerResidence = key.remuneration.allocationFoyerResidence.valeur;
+        const traitementCentPourCent = key.transaction.traitementCentPourCent.valeur;
+        const fraction = key.transaction.fraction.valeur;
+        const [num, denom] = fraction.replace(' ', '').split('/');
+
+        const calculDimona = new CalculDimona(
+            remunerationBrute,
+            allocationFoyerResidence,
+            traitementCentPourCent,
+            indexation,
+            num,
+            denom
+        );
+
+        calculsDimona.push(calculDimona);
+    }
+
+    return [calculsDimona, indexTables];
+}
+
