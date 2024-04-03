@@ -151,7 +151,10 @@ export class PdfParser {
         let adresse = membrePersonnelParts.shift();
         let codePostalVille = membrePersonnelParts.shift();
 
-        let [codePostal, ville] = [codePostalVille.slice(0, 4), codePostalVille.slice(4).trim()];
+        let [codePostal, ville] = codePostalVille ? [codePostalVille.slice(0, 4), codePostalVille.slice(4).trim()] : [null, null];
+
+        codePostal = codePostal && codePostal.trim() ? codePostal : null;
+        ville = ville && ville.trim() ? ville : null;
 
         return new PersonnelDataModel(matriculeDescription, nomPrenom, numeroCompte, adresse, codePostal, ville);
     }
