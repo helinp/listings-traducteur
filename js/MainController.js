@@ -1,6 +1,6 @@
 import { PdfParser } from './PdfParser.js'; // Assurez-vous que le nom du fichier importé correspond
 import { injectSelectMdp } from './ShowData.js'; // Assurez-vous que le nom du fichier importé correspond
-import { showHeader, showTable, showCalculDimona} from './ShowData.js'; // Assurez-vous que le nom du fichier importé correspond
+import { showHeader, showTable, showCalculDimona, showCalculC4} from './ShowData.js'; // Assurez-vous que le nom du fichier importé correspond
 
 console.log('Initialisation du contrôleur principal');
 
@@ -66,6 +66,7 @@ document.querySelector('#select-mdp').addEventListener('change', (event) => {
     showHeader(dataGlobal, index);
     showTable(dataGlobal, index);
     showCalculDimona(dataGlobal, index);
+    showCalculC4(dataGlobal, index);
 
     document.querySelector('#div-data-mdp').classList.remove('hidden');
 });

@@ -156,3 +156,26 @@ export function constructTableFooter(footer, tableData, order) {
     footer.appendChild(tr);
 }
 
+export function getNbJoursOuvrablesPremiereSemaineJuillet(annee) {
+    const date = new Date(annee, 6, 1); // 1er juillet de l'année donnée
+    let joursOuvrables = 0;
+
+    while (date.getDay() !== 0) { // Tant que ce n'est pas dimanche
+        const dayOfWeek = date.getDay();
+        if (dayOfWeek >= 1 && dayOfWeek <= 5) { // Du lundi au vendredi
+            joursOuvrables++;
+        }
+        date.setDate(date.getDate() + 1);
+    }
+
+    return joursOuvrables;
+}
+
+export function getNombreJoursPourMois(numeroMois, annee) {
+    // Retourne le nombre de jours dans un mois donné
+    return new Date(annee, numeroMois + 1, 0).getDate();
+}
+
+
+
+
