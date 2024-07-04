@@ -95,9 +95,19 @@
         <div class="mx-2">
           <!-- input float avec Tailwind CSS -->
           <label for="input-float-index" class="font-semibold">Index</label>
-          <input type="text" id="input-float-index"
-            class="p-1 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="2.0807" value="2.0807" disabled>
+          <select id="input-float-index"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="2.0807" selected>2.0807</option>
+            <option value="1.9999">1/01/2023: 1.9999</option>
+            <option value="1.9607">1/12/2022: 1.9607</option>
+            <option value="1.8845">1/09/2022: 1.8845</option>
+            <option value="1.8476">1/04/2022: 1.8476</option>
+            <option value="1.8114">1/02/2022: 1.8114</option>
+            <option value="1.7758">1/10/2021: 1.7758</option>
+            <option value="1.7410">1/4/2020: 1.7410</option>
+            <option value="1.7069">1/10/2018: 1.7069</option>
+          </select>
+
         </div>
         <table class="w-full text-sm text-left text-gray-500 my-4">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50" id="table-dimona-header">

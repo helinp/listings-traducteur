@@ -60,14 +60,25 @@ if (fileInput && importButton) {
     console.error('Erreur : les éléments d\'importation du PDF ne sont pas trouvés dans le DOM.');
 }
 
-// listenner si select-mdp sélectionné
-document.querySelector('#select-mdp').addEventListener('change', (event) => {
-    const index = event.target.value;
+function showData(mdp) {
+    const index = mdp;
     showHeader(dataGlobal, index);
     showTable(dataGlobal, index);
     showCalculDimona(dataGlobal, index);
     showCalculC4(dataGlobal, index);
-
     document.querySelector('#div-data-mdp').classList.remove('hidden');
+    console.log('showData');
+}
+
+// listenner si select-mdp sélectionné
+document.querySelector('#select-mdp').addEventListener('change', (event) => {
+    var mdp = event.target.value;
+    showData(mdp);
+});
+
+// si l'index change
+document.querySelector('#input-float-index').addEventListener('change', (event) => {
+    var mdp = document.querySelector('#select-mdp').value;
+    showData(mdp);
 });
 
